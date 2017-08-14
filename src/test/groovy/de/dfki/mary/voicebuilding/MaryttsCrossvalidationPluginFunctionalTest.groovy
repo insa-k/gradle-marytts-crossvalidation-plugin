@@ -31,10 +31,11 @@ class MaryttsCrossvalidationPluginFunctionalTest {
         def result = gradle.withArguments('selectCrossvalidationFiles').build()
         println result.output
     }
-
+    /*
     @Test
     void testGenerateCrossvalidationFiles() {
         def result = gradle.withArguments('generateCrossvalidationFiles').build()
         println result.output
     }
+    */
 }

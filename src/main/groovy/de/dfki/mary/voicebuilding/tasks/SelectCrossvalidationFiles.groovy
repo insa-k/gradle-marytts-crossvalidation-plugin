@@ -22,20 +22,20 @@ class SelectCrossvalidationFiles extends DefaultTask {
     @Input
     int foldNb = 5
 
-    @OutputDirectory
+    @OutputFile
     File cvFile = project.file("$project.buildDir/crossvalidation/crossvalidation.lst")
 
-    @OutputDirectory
+    @OutputFile
     File bnFile = project.file("$project.buildDir/basenames.lst")
 
     @TaskAction
     void select() {
         ArrayList<File> wavFiles = wavDir.listFiles()
-        ArrayList<File> shuffledFiles = Collections.shuffle(wavFiles)
+        Collections.shuffle(wavFiles)
         def cvList = new BasenameList()
         def basenameList = new BasenameList(wavDir.toPath().toString(), ".wav")
-        0.upto(foldNb) { index ->
-            def file = shuffledFiles.getAt(index)
+        0.upto(foldNb -1 ) { index ->
+            def file = wavFiles.getAt(index)
             def fileName = file.name - '.wav'
             basenameList.remove(fileName)
             cvList.add(fileName)

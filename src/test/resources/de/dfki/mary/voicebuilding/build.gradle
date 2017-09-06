@@ -56,3 +56,8 @@ selectCrossvalidationFiles {
     dependsOn convertTextPrompts
     selectCrossvalidationFiles.wavDir = file("$buildDir/unpacked/cmu_time_awb/wav")
 }
+
+synthesizeCrossvalidationAudio {
+    dependsOn selectCrossvalidationFiles
+    synthesizeCrossvalidationAudio.wavDir = file("$buildDir/unpacked/cmu_time_awb/wav")
+}

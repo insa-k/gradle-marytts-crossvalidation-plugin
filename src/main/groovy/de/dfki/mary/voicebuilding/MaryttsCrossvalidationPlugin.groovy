@@ -24,8 +24,16 @@ class MaryttsCrossvalidationPlugin implements Plugin<Project> {
             foldNb = project.selectCrossvalidationFiles.foldNb
         }
         project.task('generateCrossvalidationInputFiles', type: GenerateCrossvalidationInputFiles) {
-            dependsOn SelectCrossvalidationFiles
-            srcDir = project.selectCrossvalidationFiles.textDir
+            dependsOn project.selectCrossvalidationFiles
+            srcDir = project.generateCrossvalidationInputFiles.srcDir
+            cvFile = project.generateCrossvalidationInputFiles.cvFile
+
+        }
+        project.task('synthesizeCrossvalidationAudio', type: SynthesizeCrossvalidationAudio) {
+            dependsOn project.selectCrossvalidationFiles, project.generateCrossvalidationInputFiles
+            wavDir = project.synthesizeCrossvalidationAudio.wavDir
+            textDir = project.synthesizeCrossvalidationAudio.textDir
+
         }
     }
 }

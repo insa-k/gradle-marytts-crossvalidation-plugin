@@ -13,27 +13,28 @@ class MaryttsCrossvalidationPlugin implements Plugin<Project> {
         }
         project.repositories {
             jcenter()
+            flatDir {
+                dirs "$project.buildDir/libs"
+            }
         }
         project.dependencies {
             marytts 'de.dfki.mary:marytts-voicebuilding:0.1'
             marytts 'de.dfki.mary:marytts-lang-en:5.2'
+            marytts 'de.dfki.mary:hvoice-test-0.5.0-SNAPSHOT'
         }
         project.task('selectCrossvalidationFiles', type: SelectCrossvalidationFiles) {
-            wavDir = project.selectCrossvalidationFiles.wavDir
-            textDir = project.selectCrossvalidationFiles.textDir
-            foldNb = project.selectCrossvalidationFiles.foldNb
         }
         project.task('generateCrossvalidationInputFiles', type: GenerateCrossvalidationInputFiles) {
             dependsOn project.selectCrossvalidationFiles
-            srcDir = project.generateCrossvalidationInputFiles.srcDir
-            cvFile = project.generateCrossvalidationInputFiles.cvFile
-
         }
         project.task('synthesizeCrossvalidationAudio', type: SynthesizeCrossvalidationAudio) {
-            dependsOn project.selectCrossvalidationFiles, project.generateCrossvalidationInputFiles
-            wavDir = project.synthesizeCrossvalidationAudio.wavDir
-            textDir = project.synthesizeCrossvalidationAudio.textDir
-
+            dependsOn project.generateCrossvalidationInputFiles
+        }
+        project.task('getRealisedDurations', type: GetRealisedDurations) {
+            dependsOn project.synthesizeCrossvalidationAudio
+        }
+        project.task('runCrossvalidation', type: RunCrossvalidation) {
+            dependsOn project.getRealisedDurations
         }
     }
 }

@@ -1,5 +1,6 @@
 package de.dfki.mary.voicebuilding.tasks
 
+import groovy.json.JsonBuilder
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.*
 import marytts.*
@@ -8,41 +9,40 @@ import marytts.*
 class SynthesizeCrossvalidationAudio extends DefaultTask {
 
     @InputDirectory
-    File textDir = project.file("$project.buildDir/text")
-
-    @InputDirectory
-    File wavDir = project.file("$project.buildDir/wav")
-
-    @InputDirectory
-    File inputDir = project.file("$project.buildDir/crossvalidation/input")
+    File srcDir = project.file("$project.buildDir/crossvalidation/input")
 
     @OutputDirectory
-    File cvTextDir = project.file("$project.buildDir/crossvalidation/output")
+    File destDir = project.file("$project.buildDir/crossvalidation/output")
+
+    @Input
+    Map<String, String> maryttsProperties = ['mary.base': "$project.buildDir/resources/legacy"]
 
     @TaskAction
     void synthesize() {
-        /* TODO use marytts-voicebuilding library for remote mary interface */
-        fileTree(inputDir).include('*.xml').each { xmlFile ->
-            def basename = xmlFile.name - '.xml'
-            def doc = MaryDomUtils.parseDocument(xmlFile)
+        def batch = []
+        project.fileTree(srcDir).include("*.xml").each { xmlFile ->
+            def wavFile = project.file("$destDir/${xmlFile.name - ".xml" + ".wav"}")
+
+            batch << [
+                    locale    : "en_US",
+                    inputType : "RAWMARYXML",
+                    outputType: "AUDIO",
+                    inputFile : "$xmlFile",
+                    outputFile: "$wavFile"
+            ]
         }
-        /*
-        def mary = new marytts.client.RemoteMaryInterface()
-        mary.inputType = 'RAWMARYXML'
-        fileTree(generateCrossValidationInputFiles.destDir).include('*.xml').each { xmlFile ->
-            def basename = xmlFile.name - '.xml'
-            def doc = MaryDomUtils.parseDocument(xmlFile)
-            mary.outputType = 'AUDIO'
-            def audio = mary.generateAudio(doc)
-            def samples = MaryAudioUtils.getSamplesAsDoubleArray(audio)
-            def wavFile = file("$destDir/${basename}.wav")
-            MaryAudioUtils.writeWavFile(samples, wavFile.path, audio.format)
-            logger.lifecycle "Wrote $wavFile"
-            def labFile = file("$destDir/${basename}.lab")
-            mary.outputType = 'REALISED_DURATIONS'
-            labFile.text = mary.generateText(doc)
-            logger.lifecycle "Wrote $labFile"
+        def batchFile = project.file("$temporaryDir/batch.json")
+
+        batchFile.text = new JsonBuilder(batch).toPrettyString()
+
+        project.javaexec {
+            classpath project.configurations.marytts
+//            classpath "$project.buildDir/libs/de.dfki.mary:hvoice-test-0.5.0-SNAPSHOT"
+            main 'marytts.BatchProcessor'
+            args batchFile
+            systemProperties << maryttsProperties
         }
-        */
+
     }
+
 }

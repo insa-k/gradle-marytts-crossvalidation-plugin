@@ -2,7 +2,6 @@ package de.dfki.mary.voicebuilding.tasks
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.*
-import java.io.File
 import marytts.util.io.BasenameList
 
 class SelectCrossvalidationFiles extends DefaultTask {
@@ -12,12 +11,6 @@ class SelectCrossvalidationFiles extends DefaultTask {
 
     @InputDirectory
     File wavDir = project.file("$project.buildDir/wav")
-
-    @OutputDirectory
-    File cvTextDir = project.file("$project.buildDir/crossvalidation/text")
-
-    @OutputDirectory
-    File cvWavDir = project.file("$project.buildDir/crossvalidation/wav")
 
     @Input
     int foldNb = 5

@@ -57,7 +57,19 @@ selectCrossvalidationFiles {
     selectCrossvalidationFiles.wavDir = file("$buildDir/unpacked/cmu_time_awb/wav")
 }
 
-synthesizeCrossvalidationAudio {
-    dependsOn selectCrossvalidationFiles
-    synthesizeCrossvalidationAudio.wavDir = file("$buildDir/unpacked/cmu_time_awb/wav")
+generateCrossvalidationInputFiles {
+    generateCrossvalidationInputFiles.srcDir =  file("$buildDir/text")
+    generateCrossvalidationInputFiles.wavDir =  file("$buildDir/unpacked/cmu_time_awb/wav")
+    generateCrossvalidationInputFiles.labDir =  file("$buildDir/unpacked/cmu_time_awb/lab")
+
 }
+
+synthesizeCrossvalidationAudio {
+    dependsOn generateCrossvalidationInputFiles
+}
+
+//runCrossvalidation {
+//    dependsOn synthesizeCrossvalidationAudio
+//    runCrossvalidation.wavDir = file("$buildDir/unpacked/cmu_time_awb/wav")
+//    runCrossvalidation.labDir = file("$buildDir/unpacked/cmu_time_awb/lab")
+//}

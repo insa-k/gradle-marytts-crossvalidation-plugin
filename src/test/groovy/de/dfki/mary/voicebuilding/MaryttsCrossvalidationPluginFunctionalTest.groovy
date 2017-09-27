@@ -6,9 +6,8 @@ import org.testng.annotations.Test
 
 import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 
-@Test
 class MaryttsCrossvalidationPluginFunctionalTest {
-
+//
 //    GradleRunner gradle
 //
 //    @BeforeSuite
@@ -77,7 +76,7 @@ class MaryttsCrossvalidationPluginFunctionalTest {
 //        def result = gradle.withArguments('getRealisedDurations').build()
 //        println result.output
 //    }
-//
+
 //    @Test
 //    void testRunCrossvalidation() {
 //        def result = gradle.withArguments('runCrossvalidation').build()

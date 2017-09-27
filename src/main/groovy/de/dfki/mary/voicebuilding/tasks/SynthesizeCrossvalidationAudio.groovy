@@ -4,7 +4,7 @@ import groovy.json.JsonBuilder
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.*
 import marytts.*
-
+import org.apache.commons.io.FileUtils
 
 class SynthesizeCrossvalidationAudio extends DefaultTask {
 
@@ -19,6 +19,7 @@ class SynthesizeCrossvalidationAudio extends DefaultTask {
 
     @TaskAction
     void synthesize() {
+        FileUtils.cleanDirectory(destDir)
         def batch = []
         project.fileTree(srcDir).include("*.xml").each { xmlFile ->
             def wavFile = project.file("$destDir/${xmlFile.name - ".xml" + ".wav"}")
@@ -32,12 +33,15 @@ class SynthesizeCrossvalidationAudio extends DefaultTask {
             ]
         }
         def batchFile = project.file("$temporaryDir/batch.json")
+        if(batchFile.exists()) {
+            batchFile.delete()
+        }
+        batchFile.createNewFile()
 
         batchFile.text = new JsonBuilder(batch).toPrettyString()
 
         project.javaexec {
             classpath project.configurations.marytts
-//            classpath "$project.buildDir/libs/de.dfki.mary:hvoice-test-0.5.0-SNAPSHOT"
             main 'marytts.BatchProcessor'
             args batchFile
             systemProperties << maryttsProperties

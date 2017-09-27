@@ -59,6 +59,10 @@ class GetRealisedDurations extends DefaultTask {
             ]
         }
         def batchFile = project.file("$temporaryDir/batch.json")
+        if(batchFile.exists()) {
+            batchFile.delete()
+        }
+        batchFile.createNewFile()
 
         batchFile.text = new JsonBuilder(batch).toPrettyString()
 

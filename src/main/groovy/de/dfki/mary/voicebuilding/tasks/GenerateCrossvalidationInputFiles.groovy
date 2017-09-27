@@ -2,6 +2,7 @@ package de.dfki.mary.voicebuilding.tasks
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.*
+import org.apache.commons.io.FileUtils
 import marytts.util.io.BasenameList
 
 
@@ -27,6 +28,7 @@ class GenerateCrossvalidationInputFiles extends DefaultTask {
 
     @TaskAction
     void getReference() {
+        FileUtils.cleanDirectory(refDir)
         BasenameList cv = new BasenameList(cvFile.path)
         def String[] cvList = cv.getListAsArray()
         cvList.each { basename ->
@@ -39,6 +41,7 @@ class GenerateCrossvalidationInputFiles extends DefaultTask {
 
     @TaskAction
     void generate() {
+        FileUtils.cleanDirectory(destDir)
         def xmlString = this.class.getResourceAsStream('/de/dfki/mary/voicebuilding/templates/mary-template.xml').text
         ArrayList<String> cvListArray = new BasenameList(cvFile.path).getListAsArray()
         cvListArray.each { basename ->
@@ -49,6 +52,5 @@ class GenerateCrossvalidationInputFiles extends DefaultTask {
             def xmlFile = project.file("$destDir/${ basename + '.xml'}") <<
                 template.toString()
         }
-        getReference()
     }
 }

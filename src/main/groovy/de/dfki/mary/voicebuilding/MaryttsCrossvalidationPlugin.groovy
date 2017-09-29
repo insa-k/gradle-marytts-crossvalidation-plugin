@@ -15,15 +15,12 @@ class MaryttsCrossvalidationPlugin implements Plugin<Project> {
             jcenter()
             flatDir {
                 dirs "$project.buildDir/libs"
-//                dirs "$project.buildDir/mary/voice-${project.name}/build/libs"
             }
         }
         project.dependencies {
             marytts 'de.dfki.mary:marytts-voicebuilding:0.1'
             marytts 'de.dfki.mary:marytts-lang-en:5.2'
-            marytts 'de.dfki.mary:marytts-runtime:5.2'
             marytts "${project.group}:${project.name}:${project.version}"
-//            marytts "${project.group}:voice-${project.name}"
         }
         project.task('selectCrossvalidationFiles', type: SelectCrossvalidationFiles) {
         }
@@ -36,9 +33,6 @@ class MaryttsCrossvalidationPlugin implements Plugin<Project> {
         project.task('getRealisedDurations', type: GetRealisedDurations) {
             dependsOn project.synthesizeCrossvalidationAudio
         }
-//        project.task('runAnalysis', type: RunAnalysis) {
-////            dependsOn project.getRealisedDurations
-//        }
         project.task('runCrossvalidation', type: RunCrossvalidation) {
             dependsOn project.getRealisedDurations
         }

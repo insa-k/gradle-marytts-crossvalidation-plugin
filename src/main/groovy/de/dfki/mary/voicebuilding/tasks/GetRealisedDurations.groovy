@@ -41,38 +41,6 @@ class GetRealisedDurations extends DefaultTask {
             args batchFile
             systemProperties << maryttsProperties
         }
-        getAcoustParams()
-    }
-
-    @TaskAction
-    void getAcoustParams() {
-        def batch = []
-        project.fileTree(srcDir).include("*.xml").each { mxmlFile ->
-            def xmlFile = project.file("$destDir/$mxmlFile.name")
-
-            batch << [
-                    locale    : "en_US",
-                    inputType : "RAWMARYXML",
-                    outputType: "REALISED_ACOUSTPARAMS",
-                    inputFile : "$mxmlFile",
-                    outputFile: "$xmlFile"
-            ]
-        }
-        def batchFile = project.file("$temporaryDir/batch.json")
-        if(batchFile.exists()) {
-            batchFile.delete()
-        }
-        batchFile.createNewFile()
-
-        batchFile.text = new JsonBuilder(batch).toPrettyString()
-
-        project.javaexec {
-            classpath project.configurations.marytts
-            main 'marytts.BatchProcessor'
-            args batchFile
-            systemProperties << maryttsProperties
-        }
-
     }
 
 }

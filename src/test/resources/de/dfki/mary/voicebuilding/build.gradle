@@ -1,75 +1,60 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "de.dfki.mary:marytts-client:5.2"
+        classpath "de.dfki.mary:marytts-lang-en:5.2"
+    }
+}
+
 plugins {
+    id 'groovy'
+    id 'de.dfki.mary.voicebuilding-legacy' version '5.2.0'
+    id 'de.dfki.mary.voicebuilding-festvox' version '5.2.0'
     id 'de.dfki.mary.voicebuilding.marytts-crossvalidation'
 }
 
-configurations {
-    data
+group 'de.dfki.mary'
+
+voice {
+    name = 'cmu-awb-time'
+    language = 'en'
+    region = 'US'
+    gender = 'male'
+    type = 'unit selection'
+    description = 'A male Scottish English limited-domain unit selection voice, built from recordings provided by Carnegie Mellon University'
+    samplingRate = 16000
 }
 
 repositories {
     ivy {
-        url "http://dl.bintray.com/marytts/marytts"
+        url 'https://dl.bintray.com/marytts/marytts'
         layout 'pattern', {
-            artifact 'festvox-examples/[module]_[classifier]/[module].[ext]'
+            artifact '[organisation]/[module]/[artifact].[ext]'
         }
     }
     ivy {
         url 'http://festvox.org/examples'
         layout 'pattern', {
-            artifact '[module]_[classifier]/packed/[module].[ext]'
+            artifact '[module]_[classifier]/packed/[artifact].[ext]'
         }
     }
 }
 
 dependencies {
-    // http://festvox.org/examples/cmu_time_awb_ldom/packed/cmu_time_awb.tar.bz2
-    data group: 'org.festvox', name: 'cmu_time_awb', version: '1.0', classifier: 'ldom', ext: 'tar.bz2'
+    data group: 'org.festvox', name: 'cmu_time_awb', classifier: 'ldom', ext: 'tar.bz2'
 }
 
-task processDataDependencies(type: Copy) {
-    from configurations.data.collect {
-        tarTree(it)
-    }
-    into "$buildDir/unpacked"
-    include '**/*.wav', '**/*.lab', '**/etc/*.data'
-    includeEmptyDirs = false
-}
-
-task convertTextPrompts {
-    dependsOn processDataDependencies
-    def srcFile = file("$buildDir/unpacked/cmu_time_awb/etc/time.data")
-    inputs.file srcFile
-    ext.destDir = file("$buildDir/text")
-    outputs.dir destDir
-    doLast {
-        destDir.mkdirs()
-        srcFile.eachLine { line ->
-            def fields = line.split()
-            def prompt = fields[1]
-            def text = fields[2..-2].join(' ').replaceAll('"', '')
-            file("$destDir/${prompt}.txt").text = text
-        }
+configurations.all {
+    resolutionStrategy {
+        force 'org.codehaus.groovy:groovy-all:2.4.10'
     }
 }
 
-selectCrossvalidationFiles {
-    dependsOn convertTextPrompts
-    selectCrossvalidationFiles.wavDir = file("$buildDir/unpacked/cmu_time_awb/wav")
-}
+text.srcFileName = 'time.data'
 
-generateCrossvalidationInputFiles {
-    generateCrossvalidationInputFiles.srcDir =  file("$buildDir/text")
-    generateCrossvalidationInputFiles.wavDir =  file("$buildDir/unpacked/cmu_time_awb/wav")
-    generateCrossvalidationInputFiles.labDir =  file("$buildDir/unpacked/cmu_time_awb/lab")
+selectCrossvalidationFiles.dependsOn wav, text, lab
 
-}
+legacyInit.dependsOn wav, text, lab, selectCrossvalidationFiles, generateCrossvalidationInputFiles
 
-synthesizeCrossvalidationAudio {
-    dependsOn generateCrossvalidationInputFiles
-}
-
-//runCrossvalidation {
-//    dependsOn synthesizeCrossvalidationAudio
-//    runCrossvalidation.wavDir = file("$buildDir/unpacked/cmu_time_awb/wav")
-//    runCrossvalidation.labDir = file("$buildDir/unpacked/cmu_time_awb/lab")
-//}

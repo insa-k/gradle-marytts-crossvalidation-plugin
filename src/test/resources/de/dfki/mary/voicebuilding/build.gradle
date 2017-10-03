@@ -56,5 +56,12 @@ text.srcFileName = 'time.data'
 
 selectCrossvalidationFiles.dependsOn wav, text, lab
 
+generateCrossvalidationInputFiles.dependsOn selectCrossvalidationFiles
+
 legacyInit.dependsOn wav, text, lab, selectCrossvalidationFiles, generateCrossvalidationInputFiles
 
+synthesizeCrossvalidationAudio.dependsOn('build')
+
+getRealisedDurations.dependsOn synthesizeCrossvalidationAudio
+
+runCrossvalidation.dependsOn getRealisedDurations, synthesizeCrossvalidationAudio

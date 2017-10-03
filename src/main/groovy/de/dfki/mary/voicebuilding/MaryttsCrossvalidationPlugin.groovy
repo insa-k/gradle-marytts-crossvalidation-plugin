@@ -22,19 +22,10 @@ class MaryttsCrossvalidationPlugin implements Plugin<Project> {
             marytts 'de.dfki.mary:marytts-lang-en:5.2'
             marytts "${project.group}:${project.name}:${project.version}"
         }
-        project.task('selectCrossvalidationFiles', type: SelectCrossvalidationFiles) {
-        }
-        project.task('generateCrossvalidationInputFiles', type: GenerateCrossvalidationInputFiles) {
-            dependsOn project.selectCrossvalidationFiles
-        }
-        project.task('synthesizeCrossvalidationAudio', type: SynthesizeCrossvalidationAudio) {
-            dependsOn project.generateCrossvalidationInputFiles
-        }
-        project.task('getRealisedDurations', type: GetRealisedDurations) {
-            dependsOn project.synthesizeCrossvalidationAudio
-        }
-        project.task('runCrossvalidation', type: RunCrossvalidation) {
-            dependsOn project.getRealisedDurations
-        }
+        project.task('selectCrossvalidationFiles', type: SelectCrossvalidationFiles)
+        project.task('generateCrossvalidationInputFiles', type: GenerateCrossvalidationInputFiles)
+        project.task('synthesizeCrossvalidationAudio', type: SynthesizeCrossvalidationAudio)
+        project.task('getRealisedDurations', type: GetRealisedDurations)
+        project.task('runCrossvalidation', type: RunCrossvalidation)
     }
 }

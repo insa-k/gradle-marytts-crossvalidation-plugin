@@ -16,8 +16,10 @@ class RunCrossvalidation extends DefaultTask {
     @OutputFile
     File allophonesFile = project.file("$project.buildDir/crossvalidation/allophones_en_US.xml")
 
+    String timestamp = System.currentTimeMillis()
+
     @OutputFile
-    File outputFile = project.file("$project.buildDir/crossvalidation/rmslsfdistortion-results.txt")
+    File outputFile = project.file("$project.buildDir/crossvalidation/rmslsfdistortion-results-${timestamp}.txt")
 
     @Input
     Map<String, String> maryttsProperties = ['mary.base': "$project.buildDir/resources/legacy"]

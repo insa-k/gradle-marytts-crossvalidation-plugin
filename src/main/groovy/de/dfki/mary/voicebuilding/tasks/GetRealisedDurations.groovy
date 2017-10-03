@@ -11,7 +11,7 @@ class GetRealisedDurations extends DefaultTask {
     @InputDirectory
     File srcDir = project.file("$project.buildDir/crossvalidation/input")
 
-    @InputDirectory
+    @OutputDirectory
     File destDir = project.file("$project.buildDir/crossvalidation/output")
 
     @Input

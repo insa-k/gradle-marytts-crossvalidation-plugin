@@ -10,11 +10,8 @@ class RunCrossvalidation extends DefaultTask {
     @InputDirectory
     File srcDir = project.file("$project.buildDir/crossvalidation/output")
 
-    @OutputDirectory
+    @InputDirectory
     File refDir = project.file("$project.buildDir/crossvalidation/reference")
-
-    @OutputDirectory
-    File destDir = project.file("$project.buildDir/crossvalidation")
 
     @OutputFile
     File allophonesFile = project.file("$project.buildDir/crossvalidation/allophones_en_US.xml")

@@ -1,6 +1,7 @@
 plugins {
     id 'groovy'
     id 'java-gradle-plugin'
+    id 'maven-publish'
 }
 
 group 'de.dfki.mary'
@@ -20,7 +21,6 @@ gradlePlugin {
 
 repositories {
     jcenter()
-
 }
 
 dependencies {
@@ -35,5 +35,25 @@ test {
     useTestNG()
     testLogging {
         exceptionFormat = 'full'
+    }
+}
+
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            artifact sourceJar {
+                classifier "sources"
+            }
+        }
+    }
+    repositories {
+        mavenLocal()
     }
 }

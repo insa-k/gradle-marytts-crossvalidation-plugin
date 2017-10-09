@@ -18,26 +18,10 @@ class GenerateCrossvalidationInputFiles extends DefaultTask {
     File wavDir = project.file("$project.buildDir/wav")
 
     @OutputDirectory
-    File refDir = project.file("$project.buildDir/crossvalidation/reference")
-
-    @OutputDirectory
     File destDir = project.file("$project.buildDir/crossvalidation/input")
 
     @InputFile
     File cvFile = project.file("$project.buildDir/crossvalidation/crossvalidation.lst")
-
-    @TaskAction
-    void getReference() {
-        FileUtils.cleanDirectory(refDir)
-        BasenameList cv = new BasenameList(cvFile.path)
-        def String[] cvList = cv.getListAsArray()
-        cvList.each { basename ->
-            File wavFile = project.file("$wavDir/${basename + ".wav"}")
-            File labFile = project.file("$labDir/${basename + ".lab"}")
-            wavFile.renameTo(new File(refDir, wavFile.getName()));
-            labFile.renameTo(new File(refDir, labFile.getName()));
-        }
-    }
 
     @TaskAction
     void generate() {

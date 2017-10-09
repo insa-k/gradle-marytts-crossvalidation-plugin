@@ -64,4 +64,4 @@ synthesizeCrossvalidationAudio.dependsOn('build')
 
 getRealisedDurations.dependsOn synthesizeCrossvalidationAudio
 
-runCrossvalidation.dependsOn getRealisedDurations, synthesizeCrossvalidationAudio
+runCrossvalidation.dependsOn getRealisedDurations, synthesizeCrossvalidationAudio, moveReferenceFiles

@@ -41,8 +41,7 @@ synthesizeCrossvalidationAudio.dependsOn('build')
 
 getRealisedDurations.dependsOn synthesizeCrossvalidationAudio
 
-runCrossvalidation.dependsOn getRealisedDurations, synthesizeCrossvalidationAudio
-
+runCrossvalidation.dependsOn getRealisedDurations, synthesizeCrossvalidationAudio, moveReferenceFiles
 ```
 
 Make sure you run ` ./gradlew build ` after ` ./gradlew legacyInit` which initializes your voicebuilding process.

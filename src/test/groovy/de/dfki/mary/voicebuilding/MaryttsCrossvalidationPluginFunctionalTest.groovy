@@ -41,6 +41,12 @@ class MaryttsCrossvalidationPluginFunctionalTest {
     }
 
     @Test
+    void testMoveReferenceFiles() {
+        def result = gradle.withArguments('moveReferenceFiles').build()
+        println result.output
+    }
+
+    @Test
     void canBuildVoice() {
         def result = gradle.withArguments('legacyInit').build()
         println result.output

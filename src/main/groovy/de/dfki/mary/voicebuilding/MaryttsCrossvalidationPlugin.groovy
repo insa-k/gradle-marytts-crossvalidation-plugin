@@ -24,6 +24,7 @@ class MaryttsCrossvalidationPlugin implements Plugin<Project> {
         }
         project.task('selectCrossvalidationFiles', type: SelectCrossvalidationFiles)
         project.task('generateCrossvalidationInputFiles', type: GenerateCrossvalidationInputFiles)
+        project.task('moveReferenceFiles', type: MoveReferenceFiles)
         project.task('synthesizeCrossvalidationAudio', type: SynthesizeCrossvalidationAudio)
         project.task('getRealisedDurations', type: GetRealisedDurations)
         project.task('runCrossvalidation', type: RunCrossvalidation)

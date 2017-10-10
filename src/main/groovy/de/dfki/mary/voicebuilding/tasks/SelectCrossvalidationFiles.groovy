@@ -13,6 +13,9 @@ class SelectCrossvalidationFiles extends DefaultTask {
     File wavDir = project.file("$project.buildDir/wav")
 
     @Input
+    ArrayList<String> excludeList = []
+
+    @Input
     int foldNb = 5
 
     @OutputFile
@@ -27,6 +30,9 @@ class SelectCrossvalidationFiles extends DefaultTask {
         Collections.shuffle(wavFiles)
         def cvList = new BasenameList()
         def basenameList = new BasenameList(wavDir.toPath().toString(), ".wav")
+        excludeList.each { basename ->
+            basenameList.remove(basename)
+        }
         0.upto(foldNb -1 ) { index ->
             def file = wavFiles.getAt(index)
             def fileName = file.name - '.wav'

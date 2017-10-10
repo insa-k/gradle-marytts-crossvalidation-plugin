@@ -45,3 +45,9 @@ runCrossvalidation.dependsOn getRealisedDurations, synthesizeCrossvalidationAudi
 ```
 
 Make sure you run ` ./gradlew build ` after ` ./gradlew legacyInit` which initializes your voicebuilding process.
+
+## Excluding files from basename.lst
+If you have to exlude files from your voicebuilding process then you can add them to the ***exludeList** of `selectCrossvalidationFiles` like this:
+```
+selectCrossvalidationFiles.excludeList = ['utt0001']
+```

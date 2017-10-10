@@ -54,7 +54,10 @@ configurations.all {
 
 text.srcFileName = 'time.data'
 
-selectCrossvalidationFiles.dependsOn wav, text, lab
+selectCrossvalidationFiles {
+    dependsOn wav, text, lab
+    selectCrossvalidationFiles.excludeList = ["time0001"]
+}
 
 generateCrossvalidationInputFiles.dependsOn selectCrossvalidationFiles
 

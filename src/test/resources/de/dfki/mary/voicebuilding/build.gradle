@@ -57,6 +57,7 @@ text.srcFileName = 'time.data'
 selectCrossvalidationFiles {
     dependsOn wav, text, lab
     selectCrossvalidationFiles.excludeList = ["time0001"]
+    selectCrossvalidationFiles.cvExcludeList = ["time0002"]
 }
 
 generateCrossvalidationInputFiles.dependsOn selectCrossvalidationFiles

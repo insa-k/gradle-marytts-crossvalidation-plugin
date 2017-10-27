@@ -35,19 +35,31 @@ selectCrossvalidationFiles.dependsOn wav, text, lab
 
 generateCrossvalidationInputFiles.dependsOn selectCrossvalidationFiles
 
-legacyInit.dependsOn wav, text, lab, selectCrossvalidationFiles, generateCrossvalidationInputFiles
-
-synthesizeCrossvalidationAudio.dependsOn('build')
+legacyInit.dependsOn wav, text, lab, selectCrossvalidationFiles, generateCrossvalidationInputFiles, moveReferenceFiles
 
 getRealisedDurations.dependsOn synthesizeCrossvalidationAudio
 
-runCrossvalidation.dependsOn getRealisedDurations, synthesizeCrossvalidationAudio, moveReferenceFiles
+runCrossvalidation.dependsOn getRealisedDurations, synthesizeCrossvalidationAudio
 ```
 
 Make sure you run ` ./gradlew build ` after ` ./gradlew legacyInit` which initializes your voicebuilding process.
 
+## Specifiying the length of crossvalidation.lst
+If you want to specify the length of the `crossvalidation.lst` (for example when you use a *k-folding* method) then you can specify it like this:
+```
+selectCrossvalidationFiles.nbCvFiles = 10
+```
+The default number of files that are used in one crossvalidation is **5**.
+
 ## Excluding files from basename.lst
-If you have to exlude files from your voicebuilding process then you can add them to the ***exludeList** of `selectCrossvalidationFiles` like this:
+If you have to exclude files from your voicebuilding process then you can add them to the ***exludeList** of `selectCrossvalidationFiles` like this:
 ```
 selectCrossvalidationFiles.excludeList = ['utt0001']
 ```
+
+## Excluding files from crossvalidation.lst
+You can also exclude files from your crossvalidation list. This is often the case when you want to do several iterations and not use a file twice. You can add these files this:
+```
+selectCrossvalidationFiles.cvExcludeList = ['utt0001']
+```
+

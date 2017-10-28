@@ -3,7 +3,6 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "de.dfki.mary:marytts-client:5.2"
         classpath "de.dfki.mary:marytts-lang-en:5.2"
     }
 }
@@ -63,8 +62,6 @@ selectCrossvalidationFiles {
 generateCrossvalidationInputFiles.dependsOn selectCrossvalidationFiles
 
 legacyInit.dependsOn wav, text, lab, selectCrossvalidationFiles, generateCrossvalidationInputFiles
-
-synthesizeCrossvalidationAudio.dependsOn('build')
 
 getRealisedDurations.dependsOn synthesizeCrossvalidationAudio
 

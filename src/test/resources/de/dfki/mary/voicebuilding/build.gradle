@@ -61,8 +61,8 @@ selectCrossvalidationFiles {
 
 generateCrossvalidationInputFiles.dependsOn selectCrossvalidationFiles
 
-legacyInit.dependsOn wav, text, lab, selectCrossvalidationFiles, generateCrossvalidationInputFiles
+legacyInit.dependsOn wav, text, lab, selectCrossvalidationFiles, generateCrossvalidationInputFiles, moveReferenceFiles
 
 getRealisedDurations.dependsOn synthesizeCrossvalidationAudio
 
-runCrossvalidation.dependsOn getRealisedDurations, synthesizeCrossvalidationAudio, moveReferenceFiles
+runCrossvalidation.dependsOn getRealisedDurations, synthesizeCrossvalidationAudio

@@ -24,7 +24,7 @@ class GetRealisedDurations extends DefaultTask {
             def labFile = project.file("$destDir/${xmlFile.name - ".xml" + ".lab"}")
 
             batch << [
-                    locale    : "en_US",
+                    locale    : "${project.voice.language}_${project.voice.region}",
                     inputType : "RAWMARYXML",
                     outputType: "REALISED_DURATIONS",
                     inputFile : "$xmlFile",

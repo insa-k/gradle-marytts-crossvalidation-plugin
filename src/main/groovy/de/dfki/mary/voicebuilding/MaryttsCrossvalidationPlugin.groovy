@@ -8,6 +8,7 @@ class MaryttsCrossvalidationPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
+
         project.configurations {
             marytts
         }
@@ -19,7 +20,7 @@ class MaryttsCrossvalidationPlugin implements Plugin<Project> {
         }
         project.dependencies {
             marytts 'de.dfki.mary:marytts-voicebuilding:0.1'
-            marytts 'de.dfki.mary:marytts-lang-en:5.2'
+            marytts "de.dfki.mary:marytts-lang-${project.voice.language}:5.2"
             marytts "${project.group}:${project.name}:${project.version}"
         }
         project.task('selectCrossvalidationFiles', type: SelectCrossvalidationFiles)

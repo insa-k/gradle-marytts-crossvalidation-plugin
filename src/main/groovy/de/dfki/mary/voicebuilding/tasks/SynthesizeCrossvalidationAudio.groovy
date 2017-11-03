@@ -25,7 +25,7 @@ class SynthesizeCrossvalidationAudio extends DefaultTask {
             def wavFile = project.file("$destDir/${xmlFile.name - ".xml" + ".wav"}")
 
             batch << [
-                    locale    : "en_US",
+                    locale    : "${project.voice.language}-${project.voice.region}",
                     inputType : "RAWMARYXML",
                     outputType: "AUDIO",
                     inputFile : "$xmlFile",

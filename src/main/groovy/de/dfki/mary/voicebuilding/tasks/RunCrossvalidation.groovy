@@ -14,7 +14,7 @@ class RunCrossvalidation extends DefaultTask {
     File refDir = project.file("$project.buildDir/crossvalidation/reference")
 
     @OutputFile
-    File allophonesFile = project.file("$project.buildDir/crossvalidation/allophones_en_US.xml")
+    File allophonesFile = project.file("$project.buildDir/crossvalidation/allophones_${project.voice.language}_${project.voice.region}.xml")
 
     String timestamp = System.currentTimeMillis()
 
@@ -26,7 +26,7 @@ class RunCrossvalidation extends DefaultTask {
 
     @TaskAction
     void run() {
-        def allophonesString = this.class.getResourceAsStream('/de/dfki/mary/voicebuilding/templates/allophones_en_US.xml').text
+        def allophonesString = this.class.getResourceAsStream("/de/dfki/mary/voicebuilding/templates/allophones_${project.voice.language}_${project.voice.region}.xml").text
         if (allophonesFile.length()==0) {
             allophonesFile << allophonesString }
 

@@ -30,7 +30,7 @@ class GenerateCrossvalidationInputFiles extends DefaultTask {
         ArrayList<String> cvListArray = new BasenameList(cvFile.path).getListAsArray()
         cvListArray.each { basename ->
             def txtString = project.file("$srcDir/${basename + '.txt'}").text
-            def binding = ["text": txtString]
+            def binding = ["text": txtString, "locale": "${project.voice.language}-${project.voice.region}"]
             def engine = new groovy.text.SimpleTemplateEngine()
             def template = engine.createTemplate(xmlString).make(binding)
             def xmlFile = project.file("$destDir/${ basename + '.xml'}") <<

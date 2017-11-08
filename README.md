@@ -1,14 +1,17 @@
-# gradle-marytts-crossvalidation-plugin
 
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 [![Build Status](https://travis-ci.org/insa-k/gradle-marytts-crossvalidation-plugin.svg?branch=master)](https://travis-ci.org/insa-k/gradle-marytts-crossvalidation-plugin)
 
-This plugin divides the voice-data in test and training sets. It then runs a crossvalidation which checks the overall performance of the voice.
+# gradle-marytts-crossvalidation-plugin
+
+This plugin divides the voice-data in a test and training set and then runs a cross-validation.
+The results can give an insight on the overall performance of the voice. 
 
 ## How to use this plugin
 
 If you want to use this plugin in your voicebuilding project then.
 
-Since this is still a SNAPSHOT-version this plugin is not yet on [plugins.gradle.org](plugins.gradle.org) so in order to use it you can publish it to your local maven repository via ` ./gradlew publish `.
+Since this is still a SNAPSHOT-version, this plugin is not yet on [plugins.gradle.org](plugins.gradle.org) so in order to use it you can publish it to your local maven repository via ` ./gradlew publish `.
 
 
 Then add the following code snippet to the **build.gradle** of your voicebuilding-project.
@@ -28,7 +31,7 @@ apply plugin: 'de.dfki.mary.voicebuilding.marytts-crossvalidation'
 ```
 
 
-Tasks can be used separately but if you want to make sure the task order is correct then add this to your build.gradle:
+All of these tasks can be used separately (provided the required data is given) but if you want to make sure the task order is correct then add this to your build.gradle:
 
 ```
 selectCrossvalidationFiles.dependsOn wav, text, lab
@@ -58,8 +61,11 @@ selectCrossvalidationFiles.excludeList = ['utt0001']
 ```
 
 ## Excluding files from crossvalidation.lst
-You can also exclude files from your crossvalidation list. This is often the case when you want to do several iterations and not use a file twice. You can add these files this:
+You can also exclude files from your crossvalidation list. This is often the case when you want to do several iterations and do not want to have an utterance twice in the test set. You can add these files this:
 ```
 selectCrossvalidationFiles.cvExcludeList = ['utt0001']
 ```
+
+## Example application for a 10-fold cross-validation with the plugin
+[Here](https://github.com/insa-k/voice-cmu-rms) you can see an example for a use of this plugin.
 

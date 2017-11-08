@@ -21,30 +21,55 @@ class SynthesizeCrossvalidationAudio extends DefaultTask {
     void synthesize() {
         FileUtils.cleanDirectory(destDir)
         def batch = []
+        def batchFile = project.file("$temporaryDir/batch.json")
         project.fileTree(srcDir).include("*.xml").each { xmlFile ->
             def wavFile = project.file("$destDir/${xmlFile.name - ".xml" + ".wav"}")
+            if(batch.size() <= 300) {
+                batch << [
+                        locale    : "${project.voice.language}-${project.voice.region}",
+                        inputType : "RAWMARYXML",
+                        outputType: "AUDIO",
+                        inputFile : "$xmlFile",
+                        outputFile: "$wavFile"
+                ]
+            }
+            else {
+                if(batchFile.exists()) {
+                    batchFile.delete()
+                }
+                batchFile.createNewFile()
 
-            batch << [
-                    locale    : "${project.voice.language}-${project.voice.region}",
-                    inputType : "RAWMARYXML",
-                    outputType: "AUDIO",
-                    inputFile : "$xmlFile",
-                    outputFile: "$wavFile"
-            ]
+                batchFile.text = new JsonBuilder(batch).toPrettyString()
+
+                project.javaexec {
+                    classpath project.configurations.marytts
+                    main 'marytts.BatchProcessor'
+                    args batchFile
+                    systemProperties << maryttsProperties
+                }
+                batch.clear()
+                batch << [
+                        locale    : "${project.voice.language}-${project.voice.region}",
+                        inputType : "RAWMARYXML",
+                        outputType: "AUDIO",
+                        inputFile : "$xmlFile",
+                        outputFile: "$wavFile"
+                ]
+            }
         }
-        def batchFile = project.file("$temporaryDir/batch.json")
         if(batchFile.exists()) {
             batchFile.delete()
         }
         batchFile.createNewFile()
+        if(batch.size() > 0 ) {
+            batchFile.text = new JsonBuilder(batch).toPrettyString()
 
-        batchFile.text = new JsonBuilder(batch).toPrettyString()
-
-        project.javaexec {
-            classpath project.configurations.marytts
-            main 'marytts.BatchProcessor'
-            args batchFile
-            systemProperties << maryttsProperties
+            project.javaexec {
+                classpath project.configurations.marytts
+                main 'marytts.BatchProcessor'
+                args batchFile
+                systemProperties << maryttsProperties
+            }
         }
 
     }

@@ -20,26 +20,55 @@ class GetRealisedDurations extends DefaultTask {
     @TaskAction
     void getDuration() {
         def batch = []
+        def batchFile = project.file("$temporaryDir/batch.json")
         project.fileTree(srcDir).include("*.xml").each { xmlFile ->
             def labFile = project.file("$destDir/${xmlFile.name - ".xml" + ".lab"}")
+            if (batch.size() <= 300) {
+                batch << [
+                        locale    : "${project.voice.language}_${project.voice.region}",
+                        inputType : "RAWMARYXML",
+                        outputType: "REALISED_DURATIONS",
+                        inputFile : "$xmlFile",
+                        outputFile: "$labFile"
+                ]
+            } else {
+                if (batchFile.exists()) {
+                    batchFile.delete()
+                }
+                batchFile.createNewFile()
 
-            batch << [
-                    locale    : "${project.voice.language}_${project.voice.region}",
-                    inputType : "RAWMARYXML",
-                    outputType: "REALISED_DURATIONS",
-                    inputFile : "$xmlFile",
-                    outputFile: "$labFile"
-            ]
+                batchFile.text = new JsonBuilder(batch).toPrettyString()
+
+                project.javaexec {
+                    classpath project.configurations.marytts
+                    main 'marytts.BatchProcessor'
+                    args batchFile
+                    systemProperties << maryttsProperties
+                }
+                batch.clear()
+                batch << [
+                        locale    : "${project.voice.language}_${project.voice.region}",
+                        inputType : "RAWMARYXML",
+                        outputType: "REALISED_DURATIONS",
+                        inputFile : "$xmlFile",
+                        outputFile: "$labFile"
+                ]
+            }
         }
-        def batchFile = project.file("$temporaryDir/batch.json")
+        if (batchFile.exists()) {
+            batchFile.delete()
+        }
+        batchFile.createNewFile()
 
-        batchFile.text = new JsonBuilder(batch).toPrettyString()
+        if(batch.size() > 0 ) {
+            batchFile.text = new JsonBuilder(batch).toPrettyString()
 
-        project.javaexec {
-            classpath project.configurations.marytts
-            main 'marytts.BatchProcessor'
-            args batchFile
-            systemProperties << maryttsProperties
+            project.javaexec {
+                classpath project.configurations.marytts
+                main 'marytts.BatchProcessor'
+                args batchFile
+                systemProperties << maryttsProperties
+            }
         }
     }
 

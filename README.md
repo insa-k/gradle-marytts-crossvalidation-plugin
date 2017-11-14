@@ -1,6 +1,6 @@
 
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
-[![Build Status](https://travis-ci.org/insa-k/gradle-marytts-crossvalidation-plugin.svg?branch=master)](https://travis-ci.org/insa-k/gradle-marytts-crossvalidation-plugin)
+[![Build Status](https://travis-ci.org/marytts/gradle-marytts-crossvalidation-plugin.svg?branch=master)](https://travis-ci.org/marytts/gradle-marytts-crossvalidation-plugin)
 
 # gradle-marytts-crossvalidation-plugin
 

@@ -1,8 +1,21 @@
+buildscript {
+    repositories {
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+    }
+    dependencies {
+        classpath 'com.gradle.publish:plugin-publish-plugin:0.9.9'
+    }
+}
+
 plugins {
     id 'groovy'
     id 'java-gradle-plugin'
     id 'maven-publish'
 }
+
+apply plugin: 'com.gradle.plugin-publish'
 
 group 'de.dfki.mary'
 version '0.1-SNAPSHOT'
@@ -55,5 +68,20 @@ publishing {
     }
     repositories {
         mavenLocal()
+    }
+}
+
+pluginBundle {
+    def url = 'https://github.com/marytts/gradle-marytts-crossvalidation-plugin'
+    website = url
+    vcsUrl = url
+    description = project.description
+    tags = ['tts', 'speech synthesis', 'evaluation', 'marytts']
+
+    plugins {
+        maryttsCVPlugin {
+            id = pluginId
+            displayName = project.description
+        }
     }
 }

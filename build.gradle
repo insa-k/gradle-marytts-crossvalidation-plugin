@@ -18,7 +18,7 @@ plugins {
 apply plugin: 'com.gradle.plugin-publish'
 
 group 'de.dfki.mary'
-version '0.1-SNAPSHOT'
+version '0.1'
 description 'Crossvalidation for voicebuilding with MaryTTS'
 
 ext.pluginId = 'de.dfki.mary.voicebuilding.marytts-crossvalidation'

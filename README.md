@@ -7,31 +7,13 @@
 This plugin divides the voice-data in a test and training set and then runs a cross-validation.
 The results can give an insight on the overall performance of the voice. 
 
-## How to use this plugin
+## How to apply this plugin
 
-If you want to use this plugin in your voicebuilding project then.
+See https://plugins.gradle.org/plugin/de.dfki.mary.voicebuilding.marytts-crossvalidation
 
-Since this is still a SNAPSHOT-version, this plugin is not yet on [plugins.gradle.org](plugins.gradle.org) so in order to use it you can publish it to your local maven repository via ` ./gradlew publish `.
+## Setup
 
-
-Then add the following code snippet to the **build.gradle** of your voicebuilding-project.
-
-```
-buildscript {
-    repositories {
-        mavenLocal()
-    }
-    dependencies {
-        classpath "de.dfki.mary:gradle-marytts-crossvalidation-plugin:0.1-SNAPSHOT"
-    }
-}
-
-apply plugin: 'de.dfki.mary.voicebuilding.marytts-crossvalidation'
-
-```
-
-
-All of these tasks can be used separately (provided the required data is given) but if you want to make sure the task order is correct then add this to your build.gradle:
+All of these tasks can be used separately (provided the required data is given) but if you want to make sure the task order is correct then add this to your `build.gradle`:
 
 ```
 selectCrossvalidationFiles.dependsOn wav, text, lab
@@ -47,25 +29,24 @@ runCrossvalidation.dependsOn getRealisedDurations, synthesizeCrossvalidationAudi
 
 Make sure you run ` ./gradlew build ` after ` ./gradlew legacyInit` which initializes your voicebuilding process.
 
-## Specifiying the length of crossvalidation.lst
+### Specifiying the length of `crossvalidation.lst`
 If you want to specify the length of the `crossvalidation.lst` (for example when you use a *k-folding* method) then you can specify it like this:
 ```
 selectCrossvalidationFiles.nbCvFiles = 10
 ```
 The default number of files that are used in one crossvalidation is **5**.
 
-## Excluding files from basename.lst
-If you have to exclude files from your voicebuilding process then you can add them to the ***exludeList** of `selectCrossvalidationFiles` like this:
+### Excluding files from `basename.lst`
+If you have to exclude files from your voicebuilding process then you can add them to the `exludeList` of `selectCrossvalidationFiles` like this:
 ```
 selectCrossvalidationFiles.excludeList = ['utt0001']
 ```
 
-## Excluding files from crossvalidation.lst
+### Excluding files from `crossvalidation.lst`
 You can also exclude files from your crossvalidation list. This is often the case when you want to do several iterations and do not want to have an utterance twice in the test set. You can add these files this:
 ```
 selectCrossvalidationFiles.cvExcludeList = ['utt0001']
 ```
 
-## Example application for a 10-fold cross-validation with the plugin
-[Here](https://github.com/insa-k/voice-cmu-rms) you can see an example for a use of this plugin.
-
+### Example project
+[Here](https://github.com/insa-k/voice-cmu-rms) you can see an example project using this plugin for a 10-fold cross-validation.

@@ -23,6 +23,9 @@ class GenerateCrossvalidationInputFiles extends DefaultTask {
     @InputFile
     File cvFile = project.file("$project.buildDir/crossvalidation/crossvalidation.lst")
 
+    @Input
+    String locale = "en_US"
+
     @TaskAction
     void generate() {
         FileUtils.cleanDirectory(destDir)
@@ -30,7 +33,7 @@ class GenerateCrossvalidationInputFiles extends DefaultTask {
         ArrayList<String> cvListArray = new BasenameList(cvFile.path).getListAsArray()
         cvListArray.each { basename ->
             def txtString = project.file("$srcDir/${basename + '.txt'}").text
-            def binding = ["text": txtString, "locale": "${project.voice.language}-${project.voice.region}"]
+            def binding = ["text": txtString, "locale": locale]
             def engine = new groovy.text.SimpleTemplateEngine()
             def template = engine.createTemplate(xmlString).make(binding)
             def xmlFile = project.file("$destDir/${ basename + '.xml'}") <<

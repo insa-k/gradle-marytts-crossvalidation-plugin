@@ -17,6 +17,9 @@ class SynthesizeCrossvalidationAudio extends DefaultTask {
     @Input
     Map<String, String> maryttsProperties = ['mary.base': "$project.buildDir/resources/legacy"]
 
+    @Input
+    String locale = "en_US"
+
     @TaskAction
     void synthesize() {
         FileUtils.cleanDirectory(destDir)
@@ -26,7 +29,7 @@ class SynthesizeCrossvalidationAudio extends DefaultTask {
             def wavFile = project.file("$destDir/${xmlFile.name - ".xml" + ".wav"}")
             if(batch.size() <= 300) {
                 batch << [
-                        locale    : "${project.voice.language}-${project.voice.region}",
+                        locale    : locale,
                         inputType : "RAWMARYXML",
                         outputType: "AUDIO",
                         inputFile : "$xmlFile",
@@ -49,7 +52,7 @@ class SynthesizeCrossvalidationAudio extends DefaultTask {
                 }
                 batch.clear()
                 batch << [
-                        locale    : "${project.voice.language}-${project.voice.region}",
+                        locale    : locale,
                         inputType : "RAWMARYXML",
                         outputType: "AUDIO",
                         inputFile : "$xmlFile",

@@ -14,7 +14,7 @@ class RunCrossvalidation extends DefaultTask {
     File refDir = project.file("$project.buildDir/crossvalidation/reference")
 
     @OutputFile
-    File allophonesFile = project.file("$project.buildDir/crossvalidation/allophones_${project.voice.language}_${project.voice.region}.xml")
+    File allophonesFile = project.file("$project.buildDir/crossvalidation/allophones_${getLocale()}.xml")
 
     String timestamp = System.currentTimeMillis()
 
@@ -24,9 +24,12 @@ class RunCrossvalidation extends DefaultTask {
     @Input
     Map<String, String> maryttsProperties = ['mary.base': "$project.buildDir/resources/legacy"]
 
+    @Input
+    String locale = "en_US"
+
     @TaskAction
     void run() {
-        def allophonesString = this.class.getResourceAsStream("/de/dfki/mary/voicebuilding/templates/allophones_${project.voice.language}_${project.voice.region}.xml").text
+        def allophonesString = this.class.getResourceAsStream("/de/dfki/mary/voicebuilding/templates/allophones_${getLocale()}.xml").text
         if (allophonesFile.length()==0) {
             allophonesFile << allophonesString }
 

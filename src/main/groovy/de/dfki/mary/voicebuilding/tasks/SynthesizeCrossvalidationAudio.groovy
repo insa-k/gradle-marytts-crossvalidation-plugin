@@ -29,7 +29,7 @@ class SynthesizeCrossvalidationAudio extends DefaultTask {
             def wavFile = project.file("$destDir/${xmlFile.name - ".xml" + ".wav"}")
             if(batch.size() <= 300) {
                 batch << [
-                        locale    : locale,
+                        locale    : getLocale(),
                         inputType : "RAWMARYXML",
                         outputType: "AUDIO",
                         inputFile : "$xmlFile",
@@ -52,7 +52,7 @@ class SynthesizeCrossvalidationAudio extends DefaultTask {
                 }
                 batch.clear()
                 batch << [
-                        locale    : locale,
+                        locale    : getLocale(),
                         inputType : "RAWMARYXML",
                         outputType: "AUDIO",
                         inputFile : "$xmlFile",

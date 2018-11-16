@@ -17,6 +17,9 @@ class GetRealisedDurations extends DefaultTask {
     @Input
     Map<String, String> maryttsProperties = ['mary.base': "$project.buildDir/resources/legacy"]
 
+    @Input
+    String locale = "en_US"
+
     @TaskAction
     void getDuration() {
         def batch = []
@@ -25,7 +28,7 @@ class GetRealisedDurations extends DefaultTask {
             def labFile = project.file("$destDir/${xmlFile.name - ".xml" + ".lab"}")
             if (batch.size() <= 300) {
                 batch << [
-                        locale    : "${project.voice.language}_${project.voice.region}",
+                        locale    : getLocale(),
                         inputType : "RAWMARYXML",
                         outputType: "REALISED_DURATIONS",
                         inputFile : "$xmlFile",
@@ -47,7 +50,7 @@ class GetRealisedDurations extends DefaultTask {
                 }
                 batch.clear()
                 batch << [
-                        locale    : "${project.voice.language}_${project.voice.region}",
+                        locale    : getLocale(),
                         inputType : "RAWMARYXML",
                         outputType: "REALISED_DURATIONS",
                         inputFile : "$xmlFile",

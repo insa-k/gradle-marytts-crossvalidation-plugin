@@ -20,8 +20,8 @@ class MaryttsCrossvalidationPlugin implements Plugin<Project> {
         }
         project.dependencies {
             marytts 'de.dfki.mary:marytts-voicebuilding:0.1'
-            marytts "de.dfki.mary:marytts-lang-${project.voice.language}:5.2"
-            marytts "${project.group}:${project.name}:${project.version}"
+            marytts "voice:${project.name}:${project.version}"
+
         }
         project.task('selectCrossvalidationFiles', type: SelectCrossvalidationFiles)
         project.task('generateCrossvalidationInputFiles', type: GenerateCrossvalidationInputFiles)

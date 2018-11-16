@@ -1,21 +1,10 @@
-buildscript {
-    repositories {
-        maven {
-            url 'https://plugins.gradle.org/m2/'
-        }
-    }
-    dependencies {
-        classpath 'com.gradle.publish:plugin-publish-plugin:0.9.9'
-    }
-}
-
 plugins {
     id 'groovy'
     id 'java-gradle-plugin'
     id 'maven-publish'
 }
 
-apply plugin: 'com.gradle.plugin-publish'
+//apply plugin: 'com.gradle.plugin-publish'
 
 group 'de.dfki.mary'
 version '0.2-SNAPSHOT'
@@ -38,10 +27,11 @@ repositories {
 
 dependencies {
     compile localGroovy()
+//    compile group: 'de.dfki.mary', name: 'voicebuilding-base', version: '5.3.2'
     compile group: 'de.dfki.mary', name: 'marytts-runtime', version: '5.2', {
         exclude module: 'groovy-all'
     }
-    testCompile 'org.testng:testng:6.9.6'
+    testCompile 'org.testng:testng:6.14.3'
 }
 
 test {
@@ -56,29 +46,29 @@ task sourceJar(type: Jar) {
     from sourceSets.main.allJava
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-
-            artifact sourceJar {
-                classifier "sources"
-            }
-        }
-    }
-}
-
-pluginBundle {
-    def url = 'https://github.com/marytts/gradle-marytts-crossvalidation-plugin'
-    website = url
-    vcsUrl = url
-    description = project.description
-    tags = ['tts', 'speech synthesis', 'evaluation', 'marytts']
-
-    plugins {
-        maryttsCVPlugin {
-            id = pluginId
-            displayName = project.description
-        }
-    }
-}
+//publishing {
+//    publications {
+//        mavenJava(MavenPublication) {
+//            from components.java
+//
+//            artifact sourceJar {
+//                classifier "sources"
+//            }
+//        }
+//    }
+//}
+//
+//pluginBundle {
+//    def url = 'https://github.com/marytts/gradle-marytts-crossvalidation-plugin'
+//    website = url
+//    vcsUrl = url
+//    description = project.description
+//    tags = ['tts', 'speech synthesis', 'evaluation', 'marytts']
+//
+//    plugins {
+//        maryttsCVPlugin {
+//            id = pluginId
+//            displayName = project.description
+//        }
+//    }
+//}

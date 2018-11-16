@@ -28,48 +28,48 @@ class MaryttsCrossvalidationPluginFunctionalTest {
         assert true
     }
 
-    @Test
-    void testSelectCrossvalidationFiles() {
-        def result = gradle.withArguments('selectCrossvalidationFiles').build()
-        println result.output
-    }
+//    @Test
+//    void testSelectCrossvalidationFiles() {
+//        def result = gradle.withArguments('selectCrossvalidationFiles').build()
+//        println result.output
+//    }
+//
+//    @Test
+//    void testGenerateCrossvalidationInputFiles() {
+//        def result = gradle.withArguments('generateCrossvalidationInputFiles').build()
+//        println result.output
+//    }
+//
+//    @Test
+//    void testMoveReferenceFiles() {
+//        def result = gradle.withArguments('moveReferenceFiles').build()
+//        println result.output
+//    }
 
-    @Test
-    void testGenerateCrossvalidationInputFiles() {
-        def result = gradle.withArguments('generateCrossvalidationInputFiles').build()
-        println result.output
-    }
+//    @Test
+//    void canBuildVoice() {
+//        def result = gradle.withArguments('legacyInit').build()
+//        println result.output
+//        def result2 = gradle.withArguments('build').build()
+//        println result2.output
+//    }
 
-    @Test
-    void testMoveReferenceFiles() {
-        def result = gradle.withArguments('moveReferenceFiles').build()
-        println result.output
-    }
+//    @Test
+//    void testSynthesizeCrossvalidationAudio() {
+//        def result = gradle.withArguments('synthesizeCrossvalidationAudio').build()
+//        println result.output
+//    }
 
-    @Test
-    void canBuildVoice() {
-        def result = gradle.withArguments('legacyInit').build()
-        println result.output
-        def result2 = gradle.withArguments('build').build()
-        println result2.output
-    }
-
-    @Test
-    void testSynthesizeCrossvalidationAudio() {
-        def result = gradle.withArguments('synthesizeCrossvalidationAudio').build()
-        println result.output
-    }
-
-    @Test
-    void testGetRealisedDurations() {
-        def result = gradle.withArguments('getRealisedDurations').build()
-        println result.output
-    }
-
-    @Test
-    void testRunCrossvalidation() {
-        def result = gradle.withArguments('runCrossvalidation').build()
-        println result.output
-    }
+//    @Test
+//    void testGetRealisedDurations() {
+//        def result = gradle.withArguments('getRealisedDurations').build()
+//        println result.output
+//    }
+//
+//    @Test
+//    void testRunCrossvalidation() {
+//        def result = gradle.withArguments('runCrossvalidation').build()
+//        println result.output
+//    }
 
 }

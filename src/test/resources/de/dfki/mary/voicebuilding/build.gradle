@@ -1,68 +1,82 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath "de.dfki.mary:marytts-lang-en:5.2"
-    }
-}
-
-plugins {
-    id 'groovy'
-    id 'de.dfki.mary.voicebuilding-legacy' version '5.2.0'
-    id 'de.dfki.mary.voicebuilding-festvox' version '5.2.0'
-    id 'de.dfki.mary.voicebuilding.marytts-crossvalidation'
-}
-
-group 'de.dfki.mary'
-
-voice {
-    name = 'cmu-awb-time'
-    language = 'en'
-    region = 'US'
-    gender = 'male'
-    type = 'unit selection'
-    description = 'A male Scottish English limited-domain unit selection voice, built from recordings provided by Carnegie Mellon University'
-    samplingRate = 16000
-}
-
-repositories {
-    ivy {
-        url 'https://dl.bintray.com/marytts/marytts'
-        layout 'pattern', {
-            artifact '[organisation]/[module]/[artifact].[ext]'
-        }
-    }
-    ivy {
-        url 'http://festvox.org/examples'
-        layout 'pattern', {
-            artifact '[module]_[classifier]/packed/[artifact].[ext]'
-        }
-    }
-}
-
-dependencies {
-    data group: 'org.festvox', name: 'cmu_time_awb', classifier: 'ldom', ext: 'tar.bz2'
-}
-
-configurations.all {
-    resolutionStrategy {
-        force 'org.codehaus.groovy:groovy-all:2.4.10'
-    }
-}
-
-text.srcFileName = 'time.data'
-
-selectCrossvalidationFiles {
-    dependsOn wav, text, lab
-    selectCrossvalidationFiles.excludeList = ["time0001"]
-    selectCrossvalidationFiles.cvExcludeList = ["time0002"]
-}
-
-generateCrossvalidationInputFiles.dependsOn selectCrossvalidationFiles
-
-legacyInit.dependsOn wav, text, lab, selectCrossvalidationFiles, generateCrossvalidationInputFiles, moveReferenceFiles
-
-getRealisedDurations.dependsOn synthesizeCrossvalidationAudio
-
-runCrossvalidation.dependsOn getRealisedDurations, synthesizeCrossvalidationAudio
+//plugins {
+//    id 'de.dfki.mary.voicebuilding-legacy' version '5.3.2'
+//    id 'de.dfki.mary.voicebuilding-festvox' version '5.3.2'
+//    id 'de.dfki.mary.voicebuilding.marytts-crossvalidation'
+//}
+//
+//group 'de.dfki.mary'
+//version '5.3-SNAPSHOT'
+//
+////marytts.
+//voice {
+//    name = 'cmu-awb-time'
+//    language = 'en'
+//    region = 'US'
+//    gender = 'male'
+//    type = 'unit selection'
+//    description = 'A male Scottish English limited-domain unit selection voice, built from recordings provided by Carnegie Mellon University'
+//    samplingRate = 16000
+//}
+//
+//repositories {
+//    ivy {
+//        url 'https://dl.bintray.com/marytts/marytts'
+//        layout 'pattern', {
+//            artifact '[organisation]/[module]/[artifact].[ext]'
+//        }
+//    }
+//    ivy {
+//        url 'http://festvox.org/examples'
+//        layout 'pattern', {
+//            artifact '[module]_[classifier]/packed/[artifact].[ext]'
+//        }
+//    }
+//}
+//
+//dependencies {
+//    data group: 'org.festvox', name: 'cmu_time_awb', classifier: 'ldom', ext: 'tar.bz2'
+//}
+//
+//configurations.all {
+//    resolutionStrategy {
+//        force 'org.codehaus.groovy:groovy-all:2.4.10'
+//    }
+//}
+//
+//
+////text {
+////    srcFile.name = "time.data"
+////}
+////
+////basenames {
+////    textDir = text.destDir
+////    labDir = lab.destDir
+////}
+////
+////generateAllophones {
+////    srcDir = text.destDir
+////}
+////
+////generateVoiceConfig {
+////    afterEvaluate {
+////        config.get() << [
+////                exampleTextFile: "jar:/marytts/voice/$marytts.voice.nameCamelCase/exampleText.txt",
+////        ]
+////    }
+////}
+////
+////selectCrossvalidationFiles {
+////    dependsOn wav, text, lab
+////    selectCrossvalidationFiles.excludeList = ["time0001"]
+////    selectCrossvalidationFiles.cvExcludeList = ["time0002"]
+////}
+////
+////generateCrossvalidationInputFiles.dependsOn selectCrossvalidationFiles
+////
+////moveReferenceFiles.dependsOn generateCrossvalidationInputFiles
+////
+////build.dependsOn wav, text, lab, selectCrossvalidationFiles, generateCrossvalidationInputFiles, moveReferenceFiles
+//
+////getRealisedDurations.dependsOn synthesizeCrossvalidationAudio
+////
+////runCrossvalidation.dependsOn getRealisedDurations, synthesizeCrossvalidationAudio
